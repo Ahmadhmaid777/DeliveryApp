@@ -1,0 +1,12 @@
+export const SCREEN_KEY = {
+  HOME: "Home",
+  ORDER_MAP: "ORDER_MAP",
+  RESTURANT: "RESUTRANT",
+};
+
+export const HOME_TAB_KEY = {
+  RESTURANTS: "RESTURANTS",
+  FAVORIT: "FAVORIT",
+  SEARCH: "SEARCH",
+  PROFILE: "PROFILE",
+};

@@ -1,0 +1,90 @@
+import React from "react";
+import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
+import icons from "../../assets/icons";
+import { Fonts, Layout } from "../../constants";
+import { getCategoiresById } from "../../constants/Categories";
+import Images from "../../constants/Images";
+
+const renderRestaurantCategories = (categories) => {
+  return getCategoiresById(categories).map((category) => {
+    return (
+      <Text key={category.id} style={styles.detilesText}>
+        {category.title}
+      </Text>
+    );
+  });
+};
+
+export default function RestaurantCard({ item, ...props }) {
+  const { name, rating, categories, priceRating, photo, duration } = item;
+  console.log(item);
+  return (
+    <TouchableOpacity style={styles.container} {...props}>
+      <View style={styles.imageContainer}>
+        <Image source={photo} style={styles.recipeImage} />
+        <View style={styles.timeContainer}>
+          <Text style={styles.timeText}>{duration}</Text>
+        </View>
+      </View>
+      <View style={styles.detilesContainer}>
+        <Text style={styles.titleText}>{name}</Text>
+        <View style={styles.subDetilesContainer}>
+          <Image source={icons.star} style={styles.starIcon} />
+          <Text style={styles.detilesText}>{rating}</Text>
+          {renderRestaurantCategories(categories)}
+          <Text style={styles.detilesText}>$$$</Text>
+        </View>
+      </View>
+    </TouchableOpacity>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    marginTop: Layout.margin.large,
+    marginHorizontal:20
+  },
+  imageContainer: {
+    borderRadius: Layout.radius.large,
+  },
+  recipeImage: {
+    width: "100%",
+    height: 170,
+    resizeMode: "cover",
+    borderRadius: Layout.radius.large,
+  },
+  timeContainer: {
+    position: "absolute",
+    borderBottomStartRadius: Layout.radius.large,
+    borderTopEndRadius: Layout.radius.large * 2,
+    backgroundColor: "white",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    bottom: 0,
+  },
+  timeText: {
+    ...Fonts.style.body4,
+    fontWeight: "600",
+  },
+  titleText: {
+    ...Fonts.style.h3,
+  },
+  subDetilesContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  detilesText: {
+    ...Fonts.style.body4,
+    fontWeight: "400",
+    marginStart: Layout.margin.small,
+  },
+  detilesContainer: {
+    marginTop: Layout.margin.small,
+  },
+  starIcon: {
+    width: 12,
+    height: 12,
+  },
+});
