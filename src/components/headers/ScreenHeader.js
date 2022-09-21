@@ -9,13 +9,14 @@ export default function ScreenHeader({
   endIcon,
   onPressEndIcon,
   onPressStartIcon,
+  style
 }) {
   return (
-    <View style={styles.headerContainer}>
+    <View style={[styles.headerContainer,style]}>
       <TouchableOpacity onPress={onPressStartIcon}>
         <Image source={startIcon} style={styles.icon} />
       </TouchableOpacity>
-      <Text style={styles.title}>745 Linncoin Pi</Text>
+      <Text style={styles.title}>{title}</Text>
       <TouchableOpacity onPress={onPressEndIcon}>
         <Image source={endIcon} style={styles.icon} />
       </TouchableOpacity>

@@ -1,9 +1,9 @@
 import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Image, } from "react-native";
 import icons from "../../assets/icons";
-import { Fonts, Layout } from "../../constants";
+import { Colors, Fonts, Layout } from "../../constants";
 import { getCategoiresById } from "../../constants/Categories";
-import Images from "../../constants/Images";
+import Styles from "../../constants/Styles";
 
 const renderRestaurantCategories = (categories) => {
   return getCategoiresById(categories).map((category) => {
@@ -15,11 +15,12 @@ const renderRestaurantCategories = (categories) => {
   });
 };
 
-export default function RestaurantCard({ item, ...props }) {
+export default function RestaurantCard({ item,onpress, ...props }) {
   const { name, rating, categories, priceRating, photo, duration } = item;
-  console.log(item);
+
   return (
-    <TouchableOpacity style={styles.container} {...props}>
+    <TouchableOpacity onPress={()=>onpress(item)} style={styles.container} {...props}>
+      <>
       <View style={styles.imageContainer}>
         <Image source={photo} style={styles.recipeImage} />
         <View style={styles.timeContainer}>
@@ -32,9 +33,14 @@ export default function RestaurantCard({ item, ...props }) {
           <Image source={icons.star} style={styles.starIcon} />
           <Text style={styles.detilesText}>{rating}</Text>
           {renderRestaurantCategories(categories)}
-          <Text style={styles.detilesText}>$$$</Text>
+
+          <Text style={[styles.detilesText,{color:Fonts.color.black}]}>{'$'.repeat(priceRating)}</Text>
+          
+          <Text style={{color:Fonts.color.darkgray}}>{'$'.repeat(3-priceRating)}</Text>
+
         </View>
       </View>
+      </>
     </TouchableOpacity>
   );
 }
@@ -63,6 +69,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 10,
     bottom: 0,
+    ...Styles.shadow.small
+
   },
   timeText: {
     ...Fonts.style.body4,

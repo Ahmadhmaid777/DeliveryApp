@@ -294,6 +294,13 @@ export const restaurantData = [
   },
 ];
 
+export const getRestaurantById=(id)=>{
+  
+  let index=restaurantData.findIndex((item)=>{
+    return item.id==id;
+  })  
+  return restaurantData[index]
+}
 export const getRestaurantsByCategory = (categoryId) => {
   return restaurantData.filter((restaurant) => {
     return restaurant.categories.includes(categoryId);

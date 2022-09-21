@@ -16,6 +16,7 @@ import ScreenHeader from "../components/headers/ScreenHeader";
 import { Colors, Fonts, Layout } from "../constants";
 import Categories from "../constants/Categories";
 import { getRestaurantsByCategory } from "../constants/Restaurants";
+import { SCREEN_KEY } from "../utils/constants";
 
 const BURGER_CATEGORY_INDEX = 2;
 
@@ -43,34 +44,39 @@ const renderCategories = (selectedCategory, handelSelectCategory) => {
   );
 };
 
-//render restaurants flatList
-const renderRestaurantList = (selectedCategory,handelSelectCategory) => {
-  return (
-    <FlatList
-      data={getRestaurantsByCategory(selectedCategory)}
-      showsVerticalScrollIndicator={false}
-      // ListHeaderComponent={renderCategories(selectedCategory, handelSelectCategory)}
-      contentContainerStyle={styles.restaurntsFlatListContent}
-      bounces={false}
-   
-      style={styles.restaurantsFlatList}
-      renderItem={({ item }) => {
-        return <RestaurantCard item={item} />;
-      }}
-    />
-  );
-};
 
-export default function Home() {
+//render restaurants flatList
+
+export default function Home({navigation}) {
   let [selectedCategory, setSelecedCategory] = useState(3);
 
   const handelSelectCategory = useCallback((categoryId) => {
     setSelecedCategory(categoryId);
   });
+  const handelRestaurantClick=(item)=>{
+    navigation.navigate(SCREEN_KEY.RESTURANT,{id:item.id})
+  }
+  const renderRestaurantList = (selectedCategory) => {
+    return (
+      <FlatList
+        data={getRestaurantsByCategory(selectedCategory)}
+        showsVerticalScrollIndicator={false}
+        // ListHeaderComponent={renderCategories(selectedCategory, handelSelectCategory)}
+        contentContainerStyle={styles.restaurntsFlatListContent}
+        bounces={false}
+     
+        style={styles.restaurantsFlatList}
+        renderItem={({ item }) => {
+          return <RestaurantCard onpress={handelRestaurantClick} item={item} />;
+        }}
+      />
+    );
+  };
+  
   return (
     <View style={styles.conatiner}>
        <View style={styles.headerContainer}>
-        <ScreenHeader startIcon={icons.location} endIcon={icons.basket} />
+        <ScreenHeader title={'hello  home'} startIcon={icons.location} endIcon={icons.basket} />
         <Text style={styles.titleStyle}>Main{"\n"}Catergories</Text>
       </View>
       {/* render categories */}
