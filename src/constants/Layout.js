@@ -25,6 +25,7 @@ export default {
     normal: 16,
     large: 20,
     xLarge: 24,
+    xxLarge: 28,
   },
   radius: {
     tiny: 4,

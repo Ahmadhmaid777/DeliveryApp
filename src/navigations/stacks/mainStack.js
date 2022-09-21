@@ -13,9 +13,21 @@ export default function MainStack() {
         headerShown: false,
       }}
     >
-      <Main.Screen name={SCREEN_KEY.HOME} component={HomeTabNavigator} />
-      <Main.Screen name={SCREEN_KEY.ORDER_MAP} component={OrderDelivery} />
-      <Main.Screen name={SCREEN_KEY.RESTURANT} component={Resturant} />
+      <Main.Screen
+        options={{ animation: "slide_from_right" }}
+        name={SCREEN_KEY.HOME}
+        component={HomeTabNavigator}
+      />
+      <Main.Screen
+        options={{ animation: "slide_from_right" }}
+        name={SCREEN_KEY.ORDER_MAP}
+        component={OrderDelivery}
+      />
+      <Main.Screen
+        options={{ animation: "slide_from_right" }}
+        name={SCREEN_KEY.RESTURANT}
+        component={Resturant}
+      />
     </Main.Navigator>
   );
 }

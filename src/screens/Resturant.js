@@ -9,16 +9,17 @@ import {
 } from "react-native";
 import icons, { back } from "../assets/icons";
 import TextButton from "../components/buttons/TextButton";
+import Cart from "../components/OrderInfo";
 import ScreenHeader from "../components/headers/ScreenHeader";
 import { Colors, Fonts, Layout } from "../constants";
 import Images from "../constants/Images";
 import { getRestaurantById } from "../constants/Restaurants";
 import Styles from "../constants/Styles";
-
+import Pagerindicator from "../components/Pagerindicator";
 export default function Resturant({ route, navigation }) {
   let [restaurant, setRestaurant] = useState({});
-  let [quantity, setQuantity] = useState(0);
   let [bascket, setBascket] = useState(new Map());
+  const scrollX = useRef(new Animated.Value(0)).current;
 
   const addRecipe = (item) => {
     let { menuId } = item;
@@ -37,78 +38,13 @@ export default function Resturant({ route, navigation }) {
     setBascket(newBascket);
   };
 
-  const scrollX = useRef(new Animated.Value(0)).current;
-
   useEffect(() => {
     const res = getRestaurantById(route.params.id);
-
     setRestaurant(res);
   }, []);
 
-  const handelQuantityIncrement = (item) => {
-    addRecipe(item);
-  };
-  const handelQuantityDecrement = (item) => {
-    removeRecipe(item.menuId);
-  };
-  const renderDots = () => {
-    let dotPosition = Animated.divide(scrollX, Layout.window.width);
-
-    return (
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-evenly",
-          marginTop: Layout.margin.large,
-          width:
-            restaurant.menu != undefined
-              ? restaurant?.menu.length * 20
-              : undefined,
-        }}
-      >
-        {restaurant.menu != undefined
-          ? restaurant?.menu.map((item, index) => {
-              let dotOpacity = dotPosition.interpolate({
-                inputRange: [index - 1, index, index + 1],
-                outputRange: [0.3, 1, 0.3],
-                extrapolate: "clamp",
-              });
-              let dotSize = dotPosition.interpolate({
-                inputRange: [index - 1, index, index + 1],
-                outputRange: [6, 8, 6],
-                extrapolate: "clamp",
-              });
-              let dotColor = dotPosition.interpolate({
-                inputRange: [index - 1, index, index + 1],
-                outputRange: [
-                  Fonts.color.darkgray,
-                  Colors.primary,
-                  Fonts.color.darkgray,
-                ],
-                extrapolate: "clamp",
-              });
-              return (
-                <Animated.View
-                  key={`menuDot-${index}`}
-                  opacity={dotOpacity}
-                  style={{
-                    backgroundColor: dotColor,
-                    width: dotSize,
-                    height: dotSize,
-
-                    borderRadius: Layout.radius.large * 2,
-                  }}
-                ></Animated.View>
-              );
-            })
-          : null}
-      </View>
-    );
-  };
   return (
     <View style={styles.container}>
-      {console.log(bascket)}
       {/* screen header */}
       <ScreenHeader
         style={styles.header}
@@ -148,7 +84,7 @@ export default function Resturant({ route, navigation }) {
                       <TextButton
                         style={styles.counterButton}
                         textStyle={styles.counterButtonText}
-                        onPress={() => handelQuantityDecrement(item)}
+                        onPress={() => removeRecipe(item.menuId)}
                       >
                         -
                       </TextButton>
@@ -158,7 +94,7 @@ export default function Resturant({ route, navigation }) {
                       <TextButton
                         style={styles.counterButton}
                         textStyle={styles.counterButtonText}
-                        onPress={() => handelQuantityIncrement(item)}
+                        onPress={() => addRecipe(item)}
                       >
                         +
                       </TextButton>
@@ -192,8 +128,9 @@ export default function Resturant({ route, navigation }) {
               })
             : null}
         </Animated.ScrollView>
-        {renderDots()}
+        <Pagerindicator scrollX={scrollX} restaurant={restaurant} />
       </View>
+      <Cart bascket={bascket} />
     </View>
   );
 }
@@ -270,5 +207,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
     alignItems: "center",
     justifyContent: "center",
+    flex: 5,
   },
 });

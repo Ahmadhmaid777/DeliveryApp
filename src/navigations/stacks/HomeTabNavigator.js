@@ -4,7 +4,7 @@ import Home from "../../screens/Home";
 import Tabs from "../../screens/Tabs";
 import { HOME_TAB_KEY } from "../../utils/constants";
 import { getIconByRouteName, getTabIcon } from "../../helpers/HelpersFunc";
-import { TabBarCustomButton } from "../../components/TabBarCustomButton";
+import { TabBarCustomButton } from "../../components/buttons/TabBarCustomButton";
 const Tab = createBottomTabNavigator();
 
 export default function HomeTabNavigator() {
