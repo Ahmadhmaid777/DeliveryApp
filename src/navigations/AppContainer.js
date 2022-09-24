@@ -5,12 +5,13 @@ import { Colors } from "./../constants/index";
 export default function AppContainer() {
   return (
     <View style={{ flex: 1 }}>
-      <StatusBar
-        animated={true}
-        barStyle={"dark-content"}
-        backgroundColor={Colors.backgroundColor}
-      />
       <SafeAreaView style={{ flex: 1 }}>
+        <StatusBar
+          animated={true}
+          barStyle={"dark-content"}
+          backgroundColor={Colors.backgroundColor}
+        />
+
         <AppNavigation />
       </SafeAreaView>
     </View>

@@ -30,6 +30,7 @@ export default function Pagerindicator({ scrollX, restaurant }) {
               outputRange: [6, 8, 6],
               extrapolate: "clamp",
             });
+
             let dotColor = dotPosition.interpolate({
               inputRange: [index - 1, index, index + 1],
               outputRange: [

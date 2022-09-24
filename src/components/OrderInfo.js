@@ -3,9 +3,10 @@ import { Text, View, StyleSheet, Image } from "react-native";
 import icons from "../assets/icons";
 import { Colors, Fonts, Layout } from "../constants";
 import Images from "../constants/Images";
+import { SCREEN_KEY } from "../utils/constants";
 import Button from "./buttons/Button";
 
-export default function OrderInfo({ bascket, restaurnt }) {
+export default function OrderInfo({ bascket, onPressConfirm, navigation }) {
   let [totalPrice, setTotalPrice] = useState(0);
   let [totalQuantity, setQuantity] = useState(0);
 
@@ -16,9 +17,14 @@ export default function OrderInfo({ bascket, restaurnt }) {
       quantity += item.quantity;
       price += item.quantity * item.item.price;
     }
+
     setTotalPrice(price);
     setQuantity(quantity);
   }, [bascket]);
+
+  const handelConfirmOrder = () => {
+    navigation.navigate(SCREEN_KEY.ORDER_MAP);
+  };
 
   return (
     <View style={styles.cartContainer}>
@@ -37,7 +43,7 @@ export default function OrderInfo({ bascket, restaurnt }) {
           <Text style={styles.paymentText}>****2312</Text>
         </View>
       </View>
-      <Button title={"Order"} />
+      <Button onPress={onPressConfirm} title={"Order"} />
     </View>
   );
 }

@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Delivery-app",
-    "slug": "Delivery-app",
+    "name": "Deliveryapp",
+    "slug": "Deliveryapp",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -16,14 +16,19 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.delivery.app",
+      "config": {
+        "googleMapsApiKey": "AIzaSyBj2Dqx5yDkyrLZIl8gNUxfRccxe3WoPRc"
+      }
     },
     "android": {
       "package": "com.delivery.app",
-      "versionCode": 1,
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+      "blockedPermissions": ["android.permission.ACCESS_COARSE_LOCATION"],
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyD4tN_gWF1jxVQU75v4eQL3Fqbwf65XrGk"
+        }
       }
     },
     "web": {

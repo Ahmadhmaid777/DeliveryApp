@@ -8,11 +8,14 @@ import {
   ScrollView,
   RefreshControl,
   SafeAreaView,
+  StatusBar,
 } from "react-native";
 import icons from "../assets/icons/index";
 import CategoryCard from "../components/cards/CategoryCard";
 import RestaurantCard from "../components/cards/RestaurantCard";
 import ScreenHeader from "../components/headers/ScreenHeader";
+import CategoriesList from "../components/lists/CategoriesList";
+import RestaurantsList from "../components/lists/RestaurantsList";
 import { Colors, Fonts, Layout } from "../constants";
 import Categories from "../constants/Categories";
 import { getRestaurantsByCategory } from "../constants/Restaurants";
@@ -20,70 +23,36 @@ import { SCREEN_KEY } from "../utils/constants";
 
 const BURGER_CATEGORY_INDEX = 2;
 
-//render categories flatList
-const renderCategories = (selectedCategory, handelSelectCategory) => {
-  return (
-    <FlatList
-      data={Categories}
-      horizontal={true}
-      showsHorizontalScrollIndicator={false}
-      contentContainerStyle={{ paddingEnd: 0 }}
-      extraData={{
-        selectedCategory,
-      }}
-      initialScrollIndex={BURGER_CATEGORY_INDEX}
-      style={styles.categoriesFlatList}
-      renderItem={({ item }) => (
-        <CategoryCard
-          onPress={handelSelectCategory}
-          item={item}
-          selected={item.id == selectedCategory}
-        />
-      )}
-    />
-  );
-};
-
-
 //render restaurants flatList
 
-export default function Home({navigation}) {
+export default function Home() {
   let [selectedCategory, setSelecedCategory] = useState(3);
 
   const handelSelectCategory = useCallback((categoryId) => {
     setSelecedCategory(categoryId);
   });
-  const handelRestaurantClick=(item)=>{
-    navigation.navigate(SCREEN_KEY.RESTURANT,{id:item.id})
-  }
-  const renderRestaurantList = (selectedCategory) => {
-    return (
-      <FlatList
-        data={getRestaurantsByCategory(selectedCategory)}
-        showsVerticalScrollIndicator={false}
-        // ListHeaderComponent={renderCategories(selectedCategory, handelSelectCategory)}
-        contentContainerStyle={styles.restaurntsFlatListContent}
-        bounces={false}
-     
-        style={styles.restaurantsFlatList}
-        renderItem={({ item }) => {
-          return <RestaurantCard onpress={handelRestaurantClick} item={item} />;
-        }}
-      />
-    );
-  };
-  
+
   return (
     <View style={styles.conatiner}>
-       <View style={styles.headerContainer}>
-        <ScreenHeader title={'hello  home'} startIcon={icons.location} endIcon={icons.basket} />
+      {/*Header*/}
+      <View style={styles.headerContainer}>
+        <ScreenHeader
+          title={"hello  home"}
+          startIcon={icons.location}
+          endIcon={icons.basket}
+        />
         <Text style={styles.titleStyle}>Main{"\n"}Catergories</Text>
       </View>
-      {/* render categories */}
-      {renderCategories(selectedCategory, handelSelectCategory)}
-      {/*render restaurants list */}
-      {renderRestaurantList(selectedCategory,handelSelectCategory)}
 
+      {/* render categories */}
+      <CategoriesList
+        categories={Categories}
+        handelSelectCategory={handelSelectCategory}
+        selectedCategory={selectedCategory}
+      />
+
+      {/*render restaurants list */}
+      <RestaurantsList selectedCategory={selectedCategory} />
     </View>
   );
 }
@@ -100,15 +69,5 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     paddingHorizontal: 20,
-  },
-  categoriesFlatList: {
-    flexGrow: 0,
-    marginTop: 8,
-    marginBottom: 8,
-  },
-  restaurntsFlatListContent: { paddingBottom: 20, paddingHorizontal: 0 },
-  restaurantsFlatList: {
-    flex: 1,
-  
   },
 });

@@ -1,27 +1,19 @@
-import React, { useEffect, useRef, useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Animated,
-  Image,
-  TouchableOpacity,
-} from "react-native";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { View, StyleSheet, Animated } from "react-native";
 import icons, { back } from "../assets/icons";
-import TextButton from "../components/buttons/TextButton";
 import Cart from "../components/OrderInfo";
 import ScreenHeader from "../components/headers/ScreenHeader";
-import { Colors, Fonts, Layout } from "../constants";
-import Images from "../constants/Images";
+import { Colors, Fonts, Layout, Styles } from "../constants";
 import { getRestaurantById } from "../constants/Restaurants";
-import Styles from "../constants/Styles";
 import Pagerindicator from "../components/Pagerindicator";
+import { SCREEN_KEY } from "../utils/constants";
+import MenuItemCard from "../components/cards/MenuItemCard";
 export default function Resturant({ route, navigation }) {
   let [restaurant, setRestaurant] = useState({});
   let [bascket, setBascket] = useState(new Map());
   const scrollX = useRef(new Animated.Value(0)).current;
 
-  const addRecipe = (item) => {
+  const addRecipeToBascket = useCallback((item) => {
     let { menuId } = item;
     let newBascket = new Map(bascket.entries());
     newBascket.get(menuId)
@@ -29,19 +21,22 @@ export default function Resturant({ route, navigation }) {
       : newBascket.set(menuId, { quantity: 1, item });
 
     setBascket(newBascket);
-  };
-  const removeRecipe = (menuId) => {
+  });
+  const removeRecipeFromBascket = useCallback((menuId) => {
     let newBascket = new Map(bascket.entries());
     newBascket.get(menuId) &&
       newBascket.get(menuId).quantity > 0 &&
       newBascket.get(menuId).quantity--;
     setBascket(newBascket);
-  };
+  });
 
   useEffect(() => {
     const res = getRestaurantById(route.params.id);
     setRestaurant(res);
   }, []);
+  const onPressConfirmOrder = useCallback(() => {
+    navigation.navigate(SCREEN_KEY.ORDER_MAP, { restaurantId: restaurant.id });
+  });
 
   return (
     <View style={styles.container}>
@@ -54,7 +49,7 @@ export default function Resturant({ route, navigation }) {
         onPressStartIcon={() => navigation.goBack()}
       />
       {/* content */}
-      <View style={styles.content}>
+      <View style={styles.menuContainer}>
         <Animated.ScrollView
           pagingEnabled
           showsHorizontalScrollIndicator={false}
@@ -67,70 +62,20 @@ export default function Resturant({ route, navigation }) {
           )}
         >
           {restaurant.menu != undefined
-            ? restaurant?.menu.map((item, index) => {
-                return (
-                  <View style={{ alignItems: "center" }} key={`menu-${index}`}>
-                    {/*photo section  */}
-
-                    <Image
-                      resizeMode="cover"
-                      source={item.photo}
-                      style={styles.photo}
-                    />
-
-                    {/* quantity section */}
-
-                    <View style={styles.quntityContainer}>
-                      <TextButton
-                        style={styles.counterButton}
-                        textStyle={styles.counterButtonText}
-                        onPress={() => removeRecipe(item.menuId)}
-                      >
-                        -
-                      </TextButton>
-                      <Text style={styles.counterText}>
-                        {bascket.get(item.menuId)?.quantity || 0}
-                      </Text>
-                      <TextButton
-                        style={styles.counterButton}
-                        textStyle={styles.counterButtonText}
-                        onPress={() => addRecipe(item)}
-                      >
-                        +
-                      </TextButton>
-                    </View>
-                    {/*details section */}
-                    <View style={styles.detailsContainer}>
-                      <Text style={styles.nameText}>
-                        {item.name} - ${item.price}
-                      </Text>
-                      <Text style={styles.descriptionText}>
-                        {item.description}
-                      </Text>
-
-                      {/* <View style={styles.caloriesContainer}>
-                        <Image
-                          source={icons.fire}
-                          style={{ width: 12, height: 12 }}
-                        />
-                        <Text
-                          style={{
-                            ...Fonts.style.body3,
-                            color: Fonts.color.darkgray,
-                          }}
-                        >
-                          {item.calories.toFixed(2)} cal
-                        </Text>
-                      </View> */}
-                    </View>
-                  </View>
-                );
-              })
+            ? restaurant?.menu.map((item, index) => (
+                <MenuItemCard
+                  recipe={item}
+                  addRecipe={addRecipeToBascket}
+                  removeRecipe={removeRecipeFromBascket}
+                  quantity={bascket.get(item.menuId)?.quantity || 0}
+                  key={`menu-${item.menuId}`}
+                />
+              ))
             : null}
         </Animated.ScrollView>
         <Pagerindicator scrollX={scrollX} restaurant={restaurant} />
       </View>
-      <Cart bascket={bascket} />
+      <Cart bascket={bascket} onPressConfirm={onPressConfirmOrder} />
     </View>
   );
 }
@@ -203,7 +148,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  content: {
+  menuContainer: {
     marginTop: 10,
     alignItems: "center",
     justifyContent: "center",
