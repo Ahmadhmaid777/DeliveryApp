@@ -15,8 +15,8 @@ export const restaurantData = [
     photo: images.burger_restaurant_1,
     duration: "30 - 45 min",
     location: {
-      latitude: 1.5347282806345879,
-      longitude: 110.35632207358996,
+      latitude: 31.516854143021224,
+      longitude: 34.45001473733548,
     },
     courier: {
       avatar: images.avatar_1,
@@ -294,13 +294,12 @@ export const restaurantData = [
   },
 ];
 
-export const getRestaurantById=(id)=>{
-  
-  let index=restaurantData.findIndex((item)=>{
-    return item.id==id;
-  })  
-  return restaurantData[index]
-}
+export const getRestaurantById = (id) => {
+  let index = restaurantData.findIndex((item) => {
+    return item.id == id;
+  });
+  return restaurantData[index];
+};
 export const getRestaurantsByCategory = (categoryId) => {
   return restaurantData.filter((restaurant) => {
     return restaurant.categories.includes(categoryId);

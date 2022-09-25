@@ -53,7 +53,7 @@ export default catergories = [
   },
 ];
 
-export const getCategoiresById = (restaurantCategories) => {
+export const getMultibleCategoiryById = (restaurantCategories) => {
   let arr = [];
   for (let i = 0; i < catergories.length; i++) {
     if (restaurantCategories.includes(catergories[i].id)) {

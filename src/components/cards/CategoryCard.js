@@ -48,10 +48,10 @@ export default function CategoryCard({ item, onPress, selected = true }) {
 
 const styles = StyleSheet.create({
   cardContainer: {
-    borderRadius: Layout.radius.large * 2,
+    borderRadius: Layout.radius.large * 3,
     padding: Layout.padding.tiny,
     alignItems: "center",
-    height: 110,
+    height: 120,
     marginTop: 5,
     marginBottom: 10,
     justifyContent: "space-between",

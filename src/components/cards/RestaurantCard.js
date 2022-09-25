@@ -1,12 +1,12 @@
 import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Image, } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import icons from "../../assets/icons";
 import { Colors, Fonts, Layout } from "../../constants";
-import { getCategoiresById } from "../../constants/Categories";
+import { getMultibleCategoiryById } from "../../constants/Categories";
 import Styles from "../../constants/Styles";
 
-const renderRestaurantCategories = (categories) => {
-  return getCategoiresById(categories).map((category) => {
+const RestaurantCategories = ({ categories }) => {
+  return getMultibleCategoiryById(categories).map((category) => {
     return (
       <Text key={category.id} style={styles.detilesText}>
         {category.title}
@@ -15,31 +15,38 @@ const renderRestaurantCategories = (categories) => {
   });
 };
 
-export default function RestaurantCard({ item,onpress, ...props }) {
+export default function RestaurantCard({ item, onpress, ...props }) {
   const { name, rating, categories, priceRating, photo, duration } = item;
 
   return (
-    <TouchableOpacity onPress={()=>onpress(item)} style={styles.container} {...props}>
+    <TouchableOpacity
+      onPress={() => onpress(item)}
+      style={styles.container}
+      {...props}
+    >
       <>
-      <View style={styles.imageContainer}>
-        <Image source={photo} style={styles.recipeImage} />
-        <View style={styles.timeContainer}>
-          <Text style={styles.timeText}>{duration}</Text>
+        <View style={styles.imageContainer}>
+          <Image source={photo} style={styles.recipeImage} />
+          <View style={styles.timeContainer}>
+            <Text style={styles.timeText}>{duration}</Text>
+          </View>
         </View>
-      </View>
-      <View style={styles.detilesContainer}>
-        <Text style={styles.titleText}>{name}</Text>
-        <View style={styles.subDetilesContainer}>
-          <Image source={icons.star} style={styles.starIcon} />
-          <Text style={styles.detilesText}>{rating}</Text>
-          {renderRestaurantCategories(categories)}
+        <View style={styles.detilesContainer}>
+          <Text style={styles.titleText}>{name}</Text>
+          <View style={styles.subDetilesContainer}>
+            <Image source={icons.star} style={styles.starIcon} />
+            <Text style={styles.detilesText}>{rating}</Text>
+            <RestaurantCategories categories={categories} />
 
-          <Text style={[styles.detilesText,{color:Fonts.color.black}]}>{'$'.repeat(priceRating)}</Text>
-          
-          <Text style={{color:Fonts.color.darkgray}}>{'$'.repeat(3-priceRating)}</Text>
+            <Text style={[styles.detilesText, { color: Fonts.color.black }]}>
+              {"$".repeat(priceRating)}
+            </Text>
 
+            <Text style={{ color: Fonts.color.darkgray }}>
+              {"$".repeat(3 - priceRating)}
+            </Text>
+          </View>
         </View>
-      </View>
       </>
     </TouchableOpacity>
   );
@@ -48,7 +55,7 @@ export default function RestaurantCard({ item,onpress, ...props }) {
 const styles = StyleSheet.create({
   container: {
     marginTop: Layout.margin.large,
-    marginHorizontal:20
+    marginHorizontal: 20,
   },
   imageContainer: {
     borderRadius: Layout.radius.large,
@@ -69,8 +76,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 10,
     bottom: 0,
-    ...Styles.shadow.small
-
+    ...Styles.shadow.small,
   },
   timeText: {
     ...Fonts.style.body4,

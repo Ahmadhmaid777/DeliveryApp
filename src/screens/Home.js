@@ -11,15 +11,11 @@ import {
   StatusBar,
 } from "react-native";
 import icons from "../assets/icons/index";
-import CategoryCard from "../components/cards/CategoryCard";
-import RestaurantCard from "../components/cards/RestaurantCard";
 import ScreenHeader from "../components/headers/ScreenHeader";
 import CategoriesList from "../components/lists/CategoriesList";
 import RestaurantsList from "../components/lists/RestaurantsList";
 import { Colors, Fonts, Layout } from "../constants";
 import Categories from "../constants/Categories";
-import { getRestaurantsByCategory } from "../constants/Restaurants";
-import { SCREEN_KEY } from "../utils/constants";
 
 const BURGER_CATEGORY_INDEX = 2;
 
@@ -27,7 +23,6 @@ const BURGER_CATEGORY_INDEX = 2;
 
 export default function Home() {
   let [selectedCategory, setSelecedCategory] = useState(3);
-
   const handelSelectCategory = useCallback((categoryId) => {
     setSelecedCategory(categoryId);
   });

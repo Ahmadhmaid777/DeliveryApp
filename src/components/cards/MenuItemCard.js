@@ -2,6 +2,8 @@ import React from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
 import TextButton from "../buttons/TextButton";
 import { Colors, Fonts, Layout, Styles } from "../../constants/index";
+import icons from "../../assets/icons";
+
 export default function MenuItemCard({
   recipe,
   removeRecipe,

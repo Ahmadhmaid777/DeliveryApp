@@ -57,6 +57,7 @@ const styles = StyleSheet.create({
     marginTop: Layout.margin.large,
     paddingVertical: Layout.padding.large,
     paddingHorizontal: Layout.padding.xxLarge,
+    marginBottom: 20,
   },
   totalContainer: {
     flexDirection: "row",
